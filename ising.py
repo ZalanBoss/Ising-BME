@@ -83,9 +83,9 @@ class Ising:
         np.savez(f"{directory}/{self.beta}_{self.h}_{phase}_{timestamp}", sigma=self.sigma, phase=phase)
 
 
-#ising = Ising(0,0.3,200)
-#ising.generate()
-#ising.visualize()
+ising = Ising(0,0.46,200)
+ising.generate()
+ising.visualize()
 
 
 
