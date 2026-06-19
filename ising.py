@@ -6,7 +6,7 @@ import datetime
 from numba import njit
 
 @njit
-def _metropolis_loop(sigma, beta, h, n, max_iter, check_interval, tol, window):
+def _glauber_loop(sigma, beta, h, n, max_iter, check_interval, tol, window):
     energy_history = []
     for i in range(max_iter):
         x = np.random.randint(1, n-1)
@@ -62,7 +62,7 @@ class Ising:
         distance = max(abs(self.beta - beta_c), 0.05)
         max_iter = int(np.floor(self.n * np.log(self.n) * base_coeff / distance))
         check_interval = self.n ** 2
-        self.sigma = _metropolis_loop(
+        self.sigma = _glauber_loop(
             self.sigma, self.beta, self.h, self.n,
             max_iter, check_interval, tol, window
         )

@@ -7,7 +7,7 @@ Given G = (V, E), with nodes corresponding to spins sigma = {-1, +1}, there exis
 
 ## Solution
 
-The phase transition can be modeled by a Markov chain Monte Carlo (MCMC) method: a random walk beginning at some lattice site where, applying the Metropolis criterion, the spin is flipped with a probability determined by the resulting energy change. If the energy decreases the change is always accepted; if not, it is accepted with probability P = exp(-beta * dE), where beta = 1/kT. Near Tc this algorithm becomes computationally expensive due to critical slowing down, where correlation lengths diverge and the chain mixes slowly. To address this, we use a binary classification model trained on MCMC-generated spin configurations to predict whether the system is in the low-temperature (T < Tc) or high-temperature (T > Tc) phase, bypassing the need for costly simulation near the critical point.
+The phase transition can be modeled by a Markov chain Monte Carlo (MCMC) method: a random walk beginning at some lattice site where, applying Glauber dynamics (the heat-bath algorithm), the spin is resampled directly from its equilibrium conditional distribution given its neighbors, P(sigma_i = +1 | neighbors) = 1 / (1 + exp(-2 * beta * f)), where f is the local field (sum of neighboring spins plus external field h) and beta = 1/kT. Near Tc this algorithm becomes computationally expensive due to critical slowing down, where correlation lengths diverge and the chain mixes slowly. To address this, we use a binary classification model trained on MCMC-generated spin configurations to predict whether the system is in the low-temperature (T < Tc) or high-temperature (T > Tc) phase, bypassing the need for costly simulation near the critical point.
 
 
 

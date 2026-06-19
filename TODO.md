@@ -17,7 +17,7 @@ Goal: detect spontaneous symmetry breaking without any labels. Below Tc two pure
 
 ## Phase 2 — Conditional VAE: (β, h) → configuration
 
-Goal: replace MCMC sampling near Tc with a CVAE that, given (β, h), generates a physically plausible spin configuration directly — skipping Glauber/Metropolis dynamics.
+Goal: replace MCMC sampling near Tc with a CVAE that, given (β, h), generates a physically plausible spin configuration directly — skipping Glauber dynamics.
 
 - [x] Build VAE skeleton: encoder (Conv → μ, logσ), decoder (deconv → 200×200 spin grid), reparameterization trick
 - [x] Dataset/DataLoader wrapping `dataset` dicts, with normalized (β, h) labels
