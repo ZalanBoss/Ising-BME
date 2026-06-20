@@ -1,6 +1,7 @@
 token.txt
 hf_token.txt
 /data
+models/
 memory/
 __pycache__/
 *.png

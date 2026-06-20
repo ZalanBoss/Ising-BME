@@ -1,3 +1,4 @@
+import argparse
 import time
 import numpy as np
 import random as rd
@@ -83,9 +84,16 @@ class Ising:
         np.savez(f"{directory}/{self.beta}_{self.h}_{phase}_{timestamp}", sigma=self.sigma, phase=phase)
 
 
-ising = Ising(0,0.46,200)
-ising.generate()
-ising.visualize()
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Generate and visualize a single Ising configuration.")
+    parser.add_argument("--beta", type=float, default=0.46, help="Inverse temperature (default: 0.46)")
+    parser.add_argument("--h", type=float, default=0.0, help="External field (default: 0.0)")
+    parser.add_argument("-n", type=int, default=200, help="Lattice size n x n (default: 200)")
+    args = parser.parse_args()
+
+    ising = Ising(args.h, args.beta, args.n)
+    ising.generate()
+    ising.visualize()
 
 
 

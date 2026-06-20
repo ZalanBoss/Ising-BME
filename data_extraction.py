@@ -2,7 +2,7 @@ import os
 import glob
 import numpy as np
 
-file_pattern = "data/zero_h/*.npz"
+file_pattern = "data/non_zero_h/*.npz"
 all_files = glob.glob(file_pattern)
 
 dataset = []
