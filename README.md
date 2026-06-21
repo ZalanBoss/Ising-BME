@@ -36,7 +36,6 @@ An XGBoost regressor is trained to predict β directly from the physical feature
 | `vae.py` | Phase 2 conditional VAE: encoder/decoder architecture, training loop, and per-run logging to `experiments_log.csv`. |
 | `vae_validation.py` | Generates samples from a trained checkpoint at a chosen (β, h) and compares their physical features against real configurations. |
 | `decision_tree.py` | Phase 3: XGBoost regression of β from physical features, with SHAP analysis. |
-| `presentation.tex` | LaTeX/Beamer summary of the results above, for the final presentation. |
 | `TODO.md` | Live phase/task checklist. |
 
 ## Usage
