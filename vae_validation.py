@@ -18,11 +18,11 @@ with torch.no_grad():
     beta_norm = (beta_val - ds.beta_mean) / ds.beta_std
     h_norm = (h_val - ds.h_mean) / ds.h_std
 
-    y_cond = torch.tensor([[beta_norm, h_norm] for _ in range(sample_size)], dtype=torch.float32) 
+    y_cond = torch.tensor([[beta_norm, h_norm] for _ in range(sample_size)], dtype=torch.float32) # this is just a conditioning label
     logits = model.decoder(z, y_cond)
 
     probs = torch.bernoulli(torch.sigmoid(logits))
-    spins = 2*probs - 1
+    spins = 2*probs - 1 # reconstruct spins, based on decoder probability
 
     generated_features = []
     for i in range(sample_size):

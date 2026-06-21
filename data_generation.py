@@ -5,6 +5,7 @@ from tqdm import tqdm
 n = 200
 repeat = 10
 
+# Generate data with a focus on spins near criticality
 betas = np.concatenate([
     np.linspace(0.001, 0.35, 10),
     np.linspace(0.35,  0.53, 60),

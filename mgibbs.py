@@ -11,12 +11,20 @@ for d in dataset:
         hs.append(d["h"])
 
 def energy(sigma, h):
+    '''
+    This function computes the hamiltonian for a specific spin configuration with given external magnetic field, just using the definition.
+
+    '''
     H = -h * np.sum(sigma)
     H -= np.sum(sigma[:-1, :] * sigma[1:, :])
     H -= np.sum(sigma[:, :-1] * sigma[:, 1:])
     return H
 
 def domain_wall_density(sigma):
+    '''
+    This function measures the fraction of neighbouring pairs that disagree in spin.
+
+    '''
     vertical = (sigma[:-1, :]*sigma[1:,:]).flatten()
     horizontal = (sigma[:,:-1]*sigma[:, 1:]).flatten()
 
@@ -27,10 +35,18 @@ def domain_wall_density(sigma):
 
 
 def C(sigma, r):
-      m = sigma.mean()
-      return np.mean(sigma * np.roll(sigma, r, axis=0)) - m**2
+    '''
+    This function computes the correlation length for a given distance using the definition: C(r) = <sigma_i*sigma_j> - <sigma_i><sigma_j>
+
+    '''
+    m = sigma.mean()
+    return np.mean(sigma * np.roll(sigma, r, axis=0)) - m**2
 
 def features(sigma, h):
+    '''
+    This function returns the most important 7 features of a given configuration with external magnetic field.
+
+    '''
     # The total average magnetization
     M = np.sum(sigma) / np.size(sigma)
     # Energy per spin

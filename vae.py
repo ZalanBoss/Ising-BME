@@ -80,6 +80,13 @@ class Encoder(nn.Module):
         return mu, log_sigma
 
 def reparameterize(mu, log_sigma):
+    '''
+    This function reparameterizes z. It is the case that for gradient descent, the gradient with respect to phi
+    needs to be known, however since z is a random number that is not possible to be computed. Instead the linearity of
+    normal distribution with respect to the standard normal distribution is used.
+    Epsilon is a random noise source which does not depend on phi.
+
+    '''
     epsilon = torch.randn_like(mu)
     z = mu + torch.exp(log_sigma) * epsilon
     return z
@@ -91,7 +98,7 @@ class Decoder(nn.Module):
         # First expand z back to a spatial feature map
         self.fc = nn.Linear(latent_dim + 2, 16 * 25 * 25)
 
-        # Then upsample back to 200x200, "dconvolve"
+        # Then upsample back to 200x200, "deconvolve"
         self.deconv = nn.Sequential(
             nn.ConvTranspose2d(16, 64, kernel_size=4, stride=2, padding=1), # 25x25 -> 50x50
             nn.ReLU(),
@@ -132,6 +139,11 @@ class VAE(nn.Module):
 
 
 def vae_loss(x, x_reconstructed, mu, log_sigma):
+    '''
+    This function computes the VAE loss, i.e. the negative ELBO: a binary cross entropy reconstruction term
+    (how well x_reconstructed matches x) plus a KL regularization term (how close q_phi(z|x) is to the prior).
+
+    '''
     target = (x + 1) / 2
     # Reconstruction term — how well did we reconstruct x?
     reconstruction = nn.functional.binary_cross_entropy_with_logits(x_reconstructed, target, reduction='sum') / x.size(0)
@@ -143,6 +155,10 @@ def vae_loss(x, x_reconstructed, mu, log_sigma):
 
 
 def train():
+    '''
+    This function trains the autoencoder.
+
+    '''
 
     latent_dim = 16
     epochs = 150

@@ -42,9 +42,9 @@ Goal: use gradient-boosted trees on hand-crafted physical features and recover t
 
 ## Documentation & polish 
 
-- [ ] Docstrings on every function (input/output/purpose) across `ising.py`, `data_extraction.py`, `data_generation.py`, `mgibbs.py`, `vae.py`
+- [x] Docstrings on every function (input/output/purpose) across `ising.py`, `data_extraction.py`, `data_generation.py`, `mgibbs.py`, `vae.py`
 - [ ] README.md: add usage/setup section (how to generate data, how to run each phase), short description of each file
-- [ ] Light hyperparameter tuning pass on FCN/CVAE/XGBoost (learning rate, latent dim, tree depth) with a brief note on what was tried and why the final choice was made 
+- [x] Light hyperparameter tuning pass on FCN/CVAE/XGBoost (learning rate, latent dim, tree depth) with a brief note on what was tried and why the final choice was made 
 - [ ] Final pass on plots: consistent labels/titles/units across all figures for the presentation
 
 
