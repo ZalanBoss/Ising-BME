@@ -10,6 +10,10 @@ Direct Markov Chain Monte Carlo (MCMC) sampling becomes computationally expensiv
 
 Sample configurations are generated with Glauber dynamics (the heat-bath algorithm): at each step a lattice site is resampled directly from its equilibrium conditional distribution given its neighbours, namely P(σᵢ = +1 | neighbours) = 1 / (1 + exp(-2β f)), where f is the local field (the sum of the four neighbouring spins, plus the external field h) and β = 1/kT. This generation procedure, implemented in `ising.py` and swept over a (β, h) grid in `data_generation.py`, underlies all three phases below.
 
+### Phase 0 — Binary Phase Classification
+
+A fully-connected network is trained to classify configurations as above or below Tc directly from the raw lattice, with βc extracted by fitting a sigmoid to the classifier output as a function of β. Submatrix cropping is used as a finite-size investigation, confirming that the classifier does not rely on the absolute position of features, namely that translation invariance holds despite the fully-connected architecture having no such inductive bias built in; increasing the parameter count beyond this point is found to produce overfitting rather than further gains. Extending to the non-zero-h dataset, however, the network is found to systematically mistake field-induced order for thermal order, shifting the apparent βc downward as h increases. A small convolutional network, using sign-preserving LeakyReLU activations and average pooling in place of max pooling, substantially reduces this bias, though does not eliminate it entirely.
+
 ### Phase 1 — Unsupervised Phase Detection
 
 A feature vector (magnetization, energy, and the correlation function C(r) at several r) is computed for every h = 0 configuration, embedded with UMAP, and clustered with a two-component Gaussian Mixture Model, namely without any access to the true β labels. Two clusters are recovered below Tc, corresponding to the positive- and negative-magnetization Gibbs states, collapsing to a single cluster above Tc; the transition in cluster assignment occurs almost exactly at the analytically known βc ≈ 0.4407, indicating that spontaneous symmetry breaking is recovered from the configurations alone.
@@ -31,6 +35,7 @@ An XGBoost regressor is trained to predict β directly from the physical feature
 | `ising.py` | `Ising` class and the Glauber-dynamics (heat-bath) update loop (`_glauber_loop`) that generates a single spin configuration for a given (β, h). Run directly to generate and visualize one configuration. |
 | `data_generation.py` | Sweeps β (denser near βc) and h, generating configurations via `ising.py` and writing them to `data/non_zero_h`. |
 | `data_extraction.py` | Loads the generated `.npz` files into the `dataset` list consumed by every downstream script. |
+| `Ising FCN.ipynb` | Phase 0: FCN/CNN binary phase classifier and the finite-size/external-field investigation described above. |
 | `mgibbs.py` | Physical feature extractors (`energy`, `C`, `features`, `domain_wall_density`); run directly for Phase 1 (UMAP embedding + GMM clustering). |
 | `augment.py` | `random_symmetry`: applies an exact symmetry of the Ising Hamiltonian (lattice rotation/reflection, and global spin flip when h = 0) to a configuration, used as data augmentation for the CVAE. |
 | `vae.py` | Phase 2 conditional VAE: encoder/decoder architecture, training loop, and per-run logging to `experiments_log.csv`. |
